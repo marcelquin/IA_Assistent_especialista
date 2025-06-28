@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Texto com IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .resposta {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f0fe;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IA Assistent DevOps</h1>
+               
+        <div id="form-container">
+            <h2>Em que posso te ajudar Hoje?</h2>
+            <input type="text" id="pergunta" style="width: 100%; padding: 8px;" required>
+            <button onclick="enviarPergunta()">Enviar Pergunta</button>
+        </div>
+        
+        {% if resposta %}
+        <div class="resposta">
+            <h3>Resposta para "{{ pergunta }}":</h3>
+            <p>{{ resposta }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+<script>
+async function enviarPergunta() {
+    const pergunta = document.getElementById('pergunta').value;
+    const response = await fetch('/api/busca', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pergunta})
+    });
+    const data = await response.json();
+    
+    // Exibir resposta
+    let respostaDiv = document.getElementById('resposta');
+    if (!respostaDiv) {
+        respostaDiv = document.createElement('div');
+        respostaDiv.id = 'resposta';
+        respostaDiv.className = 'resposta';
+        document.getElementById('form-container').after(respostaDiv);
+    }
+    respostaDiv.innerHTML = `<h3>Resposta:</h3><p>${data.resposta}</p>`;
+}
+</script>
