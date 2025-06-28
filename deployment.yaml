@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ia-assistent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ia-assistent
+  template:
+    metadata:
+      labels:
+        app: ia-assistent
+    spec:
+      containers:
+      - name: ia-assistent
+        image: mquinteiro464//ia-assistent-especialista:v1
+        ports:
+        - containerPort: 5000
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ia-assistent
+spec:
+  type: LoadBalancer
+  selector:
+    app: ia-assistent
+  ports:
+  - port: 5000
+    targetPort: 5000
