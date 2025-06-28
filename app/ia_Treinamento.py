@@ -9,7 +9,6 @@ load_dotenv()
 genai.configure(api_key="AIzaSyDjBuKx2GycGmJHvq9bZV1sR-lcVspP12A")
 
 def ler_arquivo():
-    """Lê o conteúdo do arquivo de texto"""
     try:
         with open('Arquivo/arquivo.csv', 'r', encoding='utf-8') as arquivo:
             return arquivo.read()
@@ -19,18 +18,12 @@ def ler_arquivo():
         return f"Erro ao ler arquivo: {str(e)}"
 
 def fazer_busca(pergunta):
-    """Realiza uma busca no texto usando o Gemini"""
+
     try:
-        # Inicializa o modelo
         modelo = genai.GenerativeModel('gemini-1.5-flash')
         
-        # Cria o prompt combinando o texto e a pergunta
         prompt = f"""
-        Você é um especialista em Java Spring boot, Docker, DevOps, kubernetes com conhecimento em Api rest e banco de dados, 
-        com experiência em desenvolvimento de aplicações web, mobile, desktop e API's RESTful, 
-        com conhecimento em banco de dados relacionais (MySQL, PostgreSQL, SQL Server)
-        e não relacionais (MongoDB, Cassandra, Redis), 
-        com experiência em desenvolvimento de aplicações web, Api rest, DevOps, Kubernetes 
+        Você é um especialista em contabilidade, voltado para empresas, atuando na analise de informações, buscando a melhor maneira de resolver o problema e ainda retornando lucro ao cliente.
         com base nisso responda a seguinte pergunta : {pergunta}.        
         """
         
