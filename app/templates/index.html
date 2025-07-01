@@ -67,9 +67,28 @@
 <script>
 function copiarResposta() {
     const textoResposta = document.getElementById('resposta-texto').innerText;
+    
+    if (!navigator.clipboard) {
+        const textarea = document.createElement('textarea');
+        textarea.value = textoResposta;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('Resposta copiada com sucesso!');
+        } catch (err) {
+            alert('Erro ao copiar: ' + err);
+        }
+        document.body.removeChild(textarea);
+        return;
+    }
+    
     navigator.clipboard.writeText(textoResposta)
         .then(() => alert('Resposta copiada com sucesso!'))
-        .catch(err => console.error('Erro ao copiar:', err));
+        .catch(err => {
+            console.error('Erro ao copiar:', err);
+            alert('Erro ao copiar: ' + err);
+        });
 }
 
 async function enviarPergunta() {
