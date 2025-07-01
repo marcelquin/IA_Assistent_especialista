@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Texto com IA</title>
+    <title>Assistente Pessoal</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 35px;
         }
         .container {
             background-color: #f5f5f5;
@@ -28,10 +28,15 @@
             padding: 10px 15px;
             border-radius: 4px;
             cursor: pointer;
+            margin-right: 10px;
+        }
+        .copy-btn {
+            background-color: #34a853;
+            margin-top: 10px;
         }
         .resposta {
             margin-top: 20px;
-            padding: 15px;
+            padding: 35px;
             background-color: #e8f0fe;
             border-radius: 4px;
         }
@@ -39,18 +44,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>IA Assistent DevOps</h1>
+        <h1>Bem vindo, Sou seu assistente pessoal</h1>
                
         <div id="form-container">
-            <h2>Em que posso te ajudar Hoje?</h2>
-            <input type="text" id="pergunta" style="width: 100%; padding: 8px;" required>
+            <h2>Em que posso te ajudar?</h2>
+            <textarea id="pergunta" required></textarea>
+			<br/>
             <button onclick="enviarPergunta()">Enviar Pergunta</button>
         </div>
         
         {% if resposta %}
-        <div class="resposta">
+        <div class="resposta" id="resposta-container">
             <h3>Resposta para "{{ pergunta }}":</h3>
-            <p>{{ resposta }}</p>
+            <p id="resposta-texto">{{ resposta }}</p>
+            <button onclick="copiarResposta()" class="copy-btn">Copiar Resposta</button>
         </div>
         {% endif %}
     </div>
@@ -58,6 +65,13 @@
 </html>
 
 <script>
+function copiarResposta() {
+    const textoResposta = document.getElementById('resposta-texto').innerText;
+    navigator.clipboard.writeText(textoResposta)
+        .then(() => alert('Resposta copiada com sucesso!'))
+        .catch(err => console.error('Erro ao copiar:', err));
+}
+
 async function enviarPergunta() {
     const pergunta = document.getElementById('pergunta').value;
     const response = await fetch('/api/busca', {
@@ -67,7 +81,6 @@ async function enviarPergunta() {
     });
     const data = await response.json();
     
-    // Exibir resposta
     let respostaDiv = document.getElementById('resposta');
     if (!respostaDiv) {
         respostaDiv = document.createElement('div');
@@ -75,6 +88,6 @@ async function enviarPergunta() {
         respostaDiv.className = 'resposta';
         document.getElementById('form-container').after(respostaDiv);
     }
-    respostaDiv.innerHTML = `<h3>Resposta:</h3><p>${data.resposta}</p>`;
+    respostaDiv.innerHTML = `<h3>Resposta:</h3><p id="resposta-texto">${data.resposta}</p><button onclick="copiarResposta()" class="copy-btn">Copiar Resposta</button>`;
 }
 </script>
