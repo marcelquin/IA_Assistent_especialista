@@ -26,4 +26,4 @@ jobs:
           context: ./app
           push: true
           tags: |
-              ${{ secrets.DOCKERHUB_USER }}/ia-assistent-especialista:v3
+              ${{ secrets.DOCKERHUB_USER }}/ia-assistent-especialista:vcontabil
