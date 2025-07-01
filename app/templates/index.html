@@ -51,6 +51,8 @@
             <textarea id="pergunta" required></textarea>
 			<br/>
             <button onclick="enviarPergunta()">Enviar Pergunta</button>
+            <button onclick="copiarPergunta()">Copiar Pergunta</button>
+
         </div>
         
         {% if resposta %}
@@ -65,7 +67,8 @@
 </html>
 
 <script>
-function copiarResposta() {
+function copiarResposta() 
+{
     const textoResposta = document.getElementById('resposta-texto').innerText;
     
     if (!navigator.clipboard) {
@@ -82,12 +85,32 @@ function copiarResposta() {
         document.body.removeChild(textarea);
         return;
     }
+}
     
-    navigator.clipboard.writeText(textoResposta)
-        .then(() => alert('Resposta copiada com sucesso!'))
+function copiarPergunta() 
+{
+    const textoPergunta = document.getElementById('pergunta').value;
+    
+    if (!navigator.clipboard) {
+        const textarea = document.createElement('textarea');
+        textarea.value = textoPergunta;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('Pergunta copiada com sucesso!');
+        } catch (err) {
+            alert('Erro ao copiar pergunta: ' + err);
+        }
+        document.body.removeChild(textarea);
+        return;
+    }
+
+    navigator.clipboard.writeText(textoPergunta)
+        .then(() => alert('Pergunta copiada com sucesso!'))
         .catch(err => {
-            console.error('Erro ao copiar:', err);
-            alert('Erro ao copiar: ' + err);
+            console.error('Erro ao copiar pergunta:', err);
+            alert('Erro ao copiar pergunta: ' + err);
         });
 }
 
