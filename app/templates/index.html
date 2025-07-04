@@ -52,7 +52,8 @@
 			<br/>
             <button onclick="enviarPergunta()">Enviar Pergunta</button>
             <button onclick="copiarPergunta()">Copiar Pergunta</button>
-
+            <input type="file" id="arquivo" accept=".txt,.pdf,.docx" style="display: none;">
+            <button onclick="document.getElementById('arquivo').click()">Enviar Arquivo</button>
         </div>
         
         {% if resposta %}
@@ -67,6 +68,19 @@
 </html>
 
 <script>
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('pergunta').value = e.target.result;
+    };
+    reader.readAsText(file);
+}
+
+document.getElementById('arquivo').addEventListener('change', handleFileUpload);
+
 function copiarResposta() 
 {
     const textoResposta = document.getElementById('resposta-texto').innerText;
